@@ -6,10 +6,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.Interfaces;
 
 namespace Models.Classes
 {
-    public class Prompt
+    public class Prompt: IEntity
     {
         [BsonId]
         public ObjectId Id { get; set; }
@@ -28,7 +29,7 @@ namespace Models.Classes
 
         [BsonElement("prompt")]
         [Required]
-        public string PromptText { get; set; }
+        public string? PromptText { get; set; }
 
         [BsonElement("response")]
         [Required]

@@ -1,0 +1,7 @@
+
+  {
+    "MongoDB": {
+      "ConnectionString": "mongodb+srv://ai-learning-platform-db:CehQGXVH4zjfRFqv@ai-learning-platform.68iq2b9.mongodb.net/?retryWrites=true&w=majority&appName=ai-learning-platform",
+      "DatabaseName": "ai-learning-platform-db"
+    }
+  }
