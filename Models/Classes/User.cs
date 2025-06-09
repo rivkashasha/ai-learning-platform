@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Models.Interfaces;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Models.Classes
 {
-    public class User
+    public class User: IEntity
     {
         [BsonId]
         public ObjectId Id { get; set; }
