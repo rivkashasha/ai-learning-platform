@@ -8,7 +8,12 @@ namespace Models.Classes
     public class User: IEntity
     {
         [BsonId]
+        
         public ObjectId Id { get; set; }
+
+        [BsonElement("customId")]
+        [Required]
+        public string CustomId { get; set; }
 
         [BsonElement("name")]
         [Required]

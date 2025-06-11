@@ -9,7 +9,7 @@ namespace Bl.Interfaces
 {
     public interface IUserBl
     {
-        Task<User?> RegisterUserAsync(string name, string phone);
+        Task<User?> RegisterUserAsync(string customId, string name, string phone);
         Task<User?> GetUserByIdAsync(string userId);
         Task<List<User>> GetAllUsersAsync();
     }

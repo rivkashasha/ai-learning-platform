@@ -13,6 +13,7 @@ namespace Models.Classes
     public class Category: IEntity
     {
         [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
 
         [BsonElement("name")]
