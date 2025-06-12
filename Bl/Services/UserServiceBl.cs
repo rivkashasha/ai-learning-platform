@@ -17,7 +17,7 @@ namespace Bl
             _dal = dal;
         }
 
-        public async Task<User?> RegisterUserAsync(string name, string phone)
+        public async Task<User?> RegisterUserAsync(string? customId, string name, string phone)
         {
             try
             {
@@ -25,7 +25,11 @@ namespace Bl
                 if (users.Exists(u => u.Phone == phone))
                     return null;
 
-                var user = new User { Name = name, Phone = phone };
+                var user = new User {
+                    Id = MongoDB.Bson.ObjectId.GenerateNewId(),
+                    CustomId = customId,
+                    Name = name,
+                    Phone = phone };
                 var success = await _dal.Users.AddAsync(user);
                 return success ? user : null;
             }
@@ -64,13 +68,12 @@ namespace Bl
             }
         }
 
-        public async Task<User?> GetUserByIdAsync(string userId)
+        public async Task<User?> GetUserByIdAsync(string customId)
         {
             try
             {
-                if (!ObjectId.TryParse(userId, out var objectId))
-                    return null;
-                return await _dal.Users.GetByIdAsync(objectId);
+                var users = await _dal.Users.GetAllAsync();
+                return users.Find(u => u.CustomId == customId);
             }
             catch (Exception ex)
             {

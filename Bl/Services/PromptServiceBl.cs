@@ -22,22 +22,29 @@ namespace Bl
             _logger = logger;
         }
 
-        public async Task<Prompt> SubmitPromptAndGetLessonAsync(string userId, string categoryId, string subCategoryId, string promptText)
+        public async Task<Prompt?> SubmitPromptAndGetLessonAsync(string customId, string categoryName, string subCategoryName, string promptText)
         {
             try
             {
-                if (!ObjectId.TryParse(userId, out var userObjId) ||
-                    !ObjectId.TryParse(categoryId, out var catObjId) ||
-                    !ObjectId.TryParse(subCategoryId, out var subCatObjId))
-                    return null;
+                var users = await _dal.Users.GetAllAsync();
+                var user = users.Find(u => u.CustomId == customId);
+                if (user == null) return null;
+
+                var categories = await _dal.Categories.GetAllAsync();
+                var category = categories.Find(c => c.Name == categoryName);
+                if (category == null) return null;
+
+                var subCategories = await _dal.SubCategories.GetAllAsync();
+                var subCategory = subCategories.Find(s => s.Name == subCategoryName && s.CategoryId == category.Id);
+                if (subCategory == null) return null;
 
                 var aiResponse = await _aiService.GenerateLessonAsync(promptText);
 
                 var prompt = new Prompt
                 {
-                    UserId = userObjId,
-                    CategoryId = catObjId,
-                    SubCategoryId = subCatObjId,
+                    UserId = user.Id,
+                    CategoryId = category.Id,
+                    SubCategoryId = subCategory.Id,
                     PromptText = promptText,
                     Response = aiResponse,
                     CreatedAt = DateTime.UtcNow
@@ -52,14 +59,17 @@ namespace Bl
             }
         }
 
-        public async Task<List<Prompt>> GetUserLearningHistoryAsync(string userId)
+
+        public async Task<List<Prompt>> GetUserLearningHistoryAsync(string customId)
         {
             try
             {
-                if (!ObjectId.TryParse(userId, out var userObjId))
-                    return new List<Prompt>();
+                var users = await _dal.Users.GetAllAsync();
+                var user = users.Find(u => u.CustomId == customId);
+                if (user == null) return new List<Prompt>();
+
                 var allPrompts = await _dal.Prompts.GetAllAsync();
-                return allPrompts.FindAll(p => p.UserId == userObjId);
+                return allPrompts.FindAll(p => p.UserId == user.Id);
             }
             catch (Exception ex)
             {
@@ -67,6 +77,7 @@ namespace Bl
                 return new List<Prompt>();
             }
         }
+
 
         public async Task<List<Prompt>> GetAllPromptsAsync()
         {
