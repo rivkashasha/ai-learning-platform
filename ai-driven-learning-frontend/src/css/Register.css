@@ -1,0 +1,97 @@
+/* Register.css - Modern, attractive, up-to-date design */
+.register-container {
+  background: linear-gradient(135deg, #f9fafb 60%, #e3f0ff 100%);
+  padding: 2.5rem 2rem 2rem 2rem;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.13), 0 1.5px 4px rgba(0,0,0,0.04);
+  max-width: 410px;
+  width: 100%;
+  margin: 3rem auto 2rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1.5px solid #e3e8ee;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+.register-container:hover {
+  box-shadow: 0 16px 48px rgba(25, 118, 210, 0.19), 0 2px 8px rgba(0,0,0,0.08);
+  border: 1.5px solid #90caf9;
+}
+.register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+.register-container form > div:first-child {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #1565c0;
+  margin-bottom: 0.9rem;
+  text-align: center;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #e3f0ff;
+}
+.register-container input {
+  padding: 1rem 1.2rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 1.13rem;
+  background: #f3f6fa;
+  transition: border 0.2s, background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(25, 118, 210, 0.05);
+}
+.register-container input:focus {
+  border: 1.5px solid #1976d2;
+  outline: none;
+  background: #fff;
+  box-shadow: 0 2px 12px #90caf9;
+}
+.register-container button {
+  background: linear-gradient(90deg, #1976d2 60%, #42a5f5 100%);
+  color: #fff;
+  border: none;
+  padding: 1rem 1.2rem;
+  border-radius: 10px;
+  font-size: 1.18rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 0.7rem;
+  box-shadow: 0 2px 16px rgba(25, 118, 210, 0.13);
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  letter-spacing: 0.3px;
+}
+.register-container button:hover {
+  background: linear-gradient(90deg, #0d47a1 60%, #1976d2 100%);
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.22);
+  transform: translateY(-2px) scale(1.04);
+}
+.register-container .error {
+  color: #d32f2f;
+  background: #fff0f0;
+  border: 1px solid #ffcdd2;
+  border-radius: 7px;
+  padding: 0.6rem 1rem;
+  margin-top: 0.2rem;
+  font-size: 1.05rem;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 1px 4px #ffcdd2;
+}
+.register-container .switch-link {
+  text-align: center;
+  margin-top: 1.7rem;
+  font-size: 1.09rem;
+  color: #6b7280;
+}
+.register-container .switch-link a {
+  color: #1976d2;
+  text-decoration: none;
+  font-weight: 700;
+  margin-left: 0.2rem;
+  transition: color 0.2s;
+}
+.register-container .switch-link a:hover {
+  color: #0d47a1;
+  text-decoration: underline;
+}
