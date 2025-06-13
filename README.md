@@ -16,7 +16,7 @@ A full-stack mini MVP for AI-driven learning, featuring user registration, categ
 - Organized project structure (controllers, models, services, etc.)
 - Basic input validation and API error handling
 - Configuration management via dotenv/appsettings
-- **Swagger/OpenAPI documentation**
+- Swagger/OpenAPI documentation
 
 ---
 
