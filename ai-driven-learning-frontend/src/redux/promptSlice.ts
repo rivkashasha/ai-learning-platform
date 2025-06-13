@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import api from "../api/api";
 
 type LessonType = string | { response: string; [key: string]: any };
 type HistoryItemType = {
@@ -40,24 +41,14 @@ export const fetchLesson = createAsyncThunk(
         { rejectWithValue }
     ) => {
         try {
-            const response = await fetch("/api/lesson", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    userId,
-                    categoryId: category,
-                    subCategoryId: subCategory,
-                    prompt
-                })
+            return await api.submitPrompt({
+                customId: userId,
+                categoryName: category,
+                subCategoryName: subCategory,
+                promptText: prompt
             });
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                return rejectWithValue(errorData.message || "Failed to generate lesson.");
-            }
-            const data = await response.json();
-            return data;
         } catch (err: any) {
-            return rejectWithValue(err.message || "Network error.");
+            return rejectWithValue(err.message || "Failed to generate lesson.");
         }
     }
 );
@@ -66,15 +57,9 @@ export const fetchHistory = createAsyncThunk(
     "prompt/fetchHistory",
     async (userId: string, { rejectWithValue }) => {
         try {
-            const response = await fetch(`/api/history/${userId}`);
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                return rejectWithValue(errorData.message || "Failed to fetch history");
-            }
-            const data = await response.json();
-            return data;
+            return await api.getUserHistory(userId);
         } catch (err: any) {
-            return rejectWithValue(err.message || "Network error.");
+            return rejectWithValue(err.message || "Failed to fetch history");
         }
     }
 );

@@ -3,7 +3,13 @@ import api from '../api/api';
 
 export const registerUser = createAsyncThunk(
   'register/registerUser',
-  async (userData: { username: string; password: string }) => await api.register(userData)
+  async (userData: { customId: string; name: string; phone: string }, { rejectWithValue }) => {
+    try {
+      return await api.registerUser(userData);
+    } catch (err: any) {
+      return rejectWithValue(err.message || 'Registration failed.');
+    }
+  }
 );
 
 const registerSlice = createSlice({

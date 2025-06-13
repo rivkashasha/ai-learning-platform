@@ -1,9 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../api/api";
 
+// Make sure you have this function in your api.ts:
+// async login(data: { username: string; password: string }) { ... }
+
 export const loginUser = createAsyncThunk(
   "login/loginUser",
-  async (userData: { username: string; password: string }) => await api.login(userData)
+  async (userData: { username: string; password: string }, { rejectWithValue }) => {
+    try {
+      return await api.login(userData);
+    } catch (err: any) {
+      return rejectWithValue(err.message || "Login failed.");
+    }
+  }
 );
 
 const loginSlice = createSlice({

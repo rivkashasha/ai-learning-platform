@@ -24,6 +24,30 @@ const api = {
     const res = await fetch(`${API_BASE_URL}/Prompt/user/${encodeURIComponent(customId)}`);
     if (!res.ok) throw new Error("Failed to fetch user history");
     return res.json();
+  },
+  async getAllUsers() {
+    const res = await fetch(`${API_BASE_URL}/User`);
+    if (!res.ok) throw new Error("Failed to fetch users");
+    return res.json();
+  },
+  async getAllPrompts() {
+    const res = await fetch(`${API_BASE_URL}/Prompt`);
+    if (!res.ok) throw new Error("Failed to fetch prompts");
+    return res.json();
+  },
+  async registerUser(data: { customId: string; name: string; phone: string }) {
+    const res = await fetch(`${API_BASE_URL}/User/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  },
+  async getUserById(customId: string) {
+    const res = await fetch(`${API_BASE_URL}/User/${encodeURIComponent(customId)}`);
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
   }
 };
 

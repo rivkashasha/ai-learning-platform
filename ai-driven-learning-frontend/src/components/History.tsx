@@ -1,16 +1,21 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchUserHistory, selectHistory, selectHistoryLoading, selectHistoryError } from "../redux/historySlice";
+import React, { useEffect, useState } from "react";
+import api from "../api/api";
 
 const History = ({ userId }: { userId: string }) => {
-  const dispatch = useDispatch();
-  const history = useSelector(selectHistory);
-  const loading = useSelector(selectHistoryLoading);
-  const error = useSelector(selectHistoryError);
+  const [history, setHistory] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (userId) dispatch(fetchUserHistory(userId));
-  }, [dispatch, userId]);
+    if (userId) {
+      setLoading(true);
+      setError(null);
+      api.getUserHistory(userId)
+        .then(setHistory)
+        .catch((err) => setError(err.message || "Failed to fetch history"))
+        .finally(() => setLoading(false));
+    }
+  }, [userId]);
 
   if (loading) return <div>Loading history...</div>;
   if (error) return <div style={{ color: "red" }}>{error}</div>;

@@ -41,20 +41,6 @@ namespace Bl
             }
         }
 
-        public async Task<User?> GetUserByPhoneAsync(string phone)
-        {
-            try
-            {
-                var users = await _dal.Users.GetAllAsync();
-                return users.Find(u => u.Phone == phone);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"GetUserByPhoneAsync error: {ex.Message}");
-                return null;
-            }
-        }
-
         public async Task<List<User>> GetAllUsersAsync()
         {
             try

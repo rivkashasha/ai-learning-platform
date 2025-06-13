@@ -1,5 +1,6 @@
 import { useState } from "react";
 import '../css/Register.css';
+import api from "../api/api";
 
 const Register = () => {
     const [id, setId] = useState("");
@@ -14,22 +15,13 @@ const Register = () => {
         }
         setError("");
         try {
-            const response = await fetch('http://localhost:5089/api/User/register', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ customId: id, name, phone })
-            });
-            if (!response.ok) {
-                const errorMsg = await response.text();
-                setError(errorMsg || 'Registration failed.');
-                return;
-            }
+            await api.registerUser({ customId: id, name, phone });
             setId("");
             setName("");
             setPhone("");
             alert('Registration successful!');
-        } catch (err) {
-            setError('Network error.');
+        } catch (err: any) {
+            setError(err.message || 'Registration failed.');
         }
     };
     return (
