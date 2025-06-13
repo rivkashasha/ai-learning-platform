@@ -34,10 +34,16 @@ namespace AIDrivenLearningService.Controllers
             }
         }
 
-        [HttpGet("{categoryId}/subcategories")]
-        public async Task<IActionResult> GetSubCategories(string categoryId)
+        [HttpGet("{categoryName}/subcategories")]
+        public async Task<IActionResult> GetSubCategories(string categoryName)
         {
-            var subCategories = await _categoryBl.GetSubCategoriesForCategoryAsync(categoryId);
+            var categories = await _categoryBl.GetAllCategoriesAsync();
+            var category = categories.FirstOrDefault(c => c.Name != null && c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase));
+            if (category == null)
+            {
+                return NotFound(new { message = $"Category '{categoryName}' not found." });
+            }
+            var subCategories = await _categoryBl.GetSubCategoriesForCategoryAsync(category.Id.ToString());
             var result = subCategories.Select(sc => new
             {
                 id = sc.Id.ToString(),
@@ -46,5 +52,6 @@ namespace AIDrivenLearningService.Controllers
             });
             return Ok(result);
         }
+
     }
 }

@@ -1,12 +1,15 @@
 using Bl.Interfaces;
 using Bl;
 using Dal.Database;
+using Bl.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 builder.Services.AddLogging();
+builder.Services.Configure<OpenAIOptions>(builder.Configuration.GetSection("OpenAI"));
+
 builder.Services.AddSingleton<MongoDBContext>();
 builder.Services.AddSingleton<MongoDBManager>();
 

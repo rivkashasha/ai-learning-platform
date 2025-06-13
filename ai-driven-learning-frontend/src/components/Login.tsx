@@ -21,8 +21,7 @@ const SignIn = () => {
                 setError(errorMsg || 'User not found or login failed.');
                 return;
             }
-            // Login successful
-            setLoggedInId(id); // Save id for Dashboard
+            setLoggedInId(id);
             setLoggedIn(true);
             setId("");
         } catch (err) {

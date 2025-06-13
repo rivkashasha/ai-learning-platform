@@ -25,17 +25,19 @@ public class OpenAIService : IAIService
         _logger = logger;
     }
 
-    public async Task<string> GenerateLessonAsync(string promptText)
+    public async Task<string> GenerateLessonAsync(string categoryName, string subCategoryName, string promptText)
     {
         try
         {
+            var fullPrompt = $"Teach a lesson about the category '{categoryName}', specifically the subcategory '{subCategoryName}'. The user wants to learn: {promptText}";
+
             var requestBody = new
             {
                 model = _model,
                 messages = new[]
                 {
-                    new { role = "user", content = promptText }
-                }
+                new { role = "user", content = fullPrompt }
+            }
             };
 
             var requestJson = JsonSerializer.Serialize(requestBody);
@@ -80,4 +82,5 @@ public class OpenAIService : IAIService
             return "Sorry, an unexpected error occurred.";
         }
     }
+
 }

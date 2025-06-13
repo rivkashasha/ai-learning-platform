@@ -24,7 +24,6 @@ const Register = () => {
                 setError(errorMsg || 'Registration failed.');
                 return;
             }
-            // Registration successful
             setId("");
             setName("");
             setPhone("");

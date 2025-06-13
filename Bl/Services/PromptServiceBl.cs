@@ -28,17 +28,34 @@ namespace Bl
             {
                 var users = await _dal.Users.GetAllAsync();
                 var user = users.Find(u => u.CustomId == customId);
-                if (user == null) return null;
+                if (user == null)
+                {
+                    _logger.LogWarning($"User not found: {customId}");
+                    return null;
+                }
 
                 var categories = await _dal.Categories.GetAllAsync();
                 var category = categories.Find(c => c.Name == categoryName);
-                if (category == null) return null;
+                if (category == null)
+                {
+                    _logger.LogWarning($"Category not found: {categoryName}");
+                    return null;
+                }
 
                 var subCategories = await _dal.SubCategories.GetAllAsync();
                 var subCategory = subCategories.Find(s => s.Name == subCategoryName && s.CategoryId == category.Id);
-                if (subCategory == null) return null;
+                if (subCategory == null)
+                {
+                    _logger.LogWarning($"SubCategory not found: {subCategoryName} in category {categoryName}");
+                    return null;
+                }
 
-                var aiResponse = await _aiService.GenerateLessonAsync(promptText);
+                var aiResponse = await _aiService.GenerateLessonAsync(category.Name, subCategory.Name, promptText);
+                if (string.IsNullOrWhiteSpace(aiResponse))
+                {
+                    _logger.LogWarning("AI response was empty or null.");
+                    return null;
+                }
 
                 var prompt = new Prompt
                 {
@@ -58,6 +75,7 @@ namespace Bl
                 return null;
             }
         }
+
 
 
         public async Task<List<Prompt>> GetUserLearningHistoryAsync(string customId)

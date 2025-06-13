@@ -8,6 +8,6 @@ namespace Bl.Interfaces
 {
     public interface IAIService
     {
-        Task<string> GenerateLessonAsync(string promptText);
+      Task<string> GenerateLessonAsync(string categoryName, string subCategoryName, string promptText);       
     }
 }

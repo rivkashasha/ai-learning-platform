@@ -1,9 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
-import registerReducer from './RegisterSlice';
+import dashboardReducer from './dashboardSlice';
+import historyReducer from './historySlice';
+import newPromptReducer from './newPromptSlice';
+import registerReducer from './registerSlice';
+import loginReducer from './loginSlice';
 
 const store = configureStore({
   reducer: {
+    dashboard: dashboardReducer,
+    history: historyReducer,
+    newPrompt: newPromptReducer,
     register: registerReducer,
+    login: loginReducer,
   },
 });
 

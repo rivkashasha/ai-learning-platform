@@ -1,23 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import api from '../api/api';
 
 export const registerUser = createAsyncThunk(
   'register/registerUser',
-  async ({ id, name, phone }: { id: string; name: string; phone: string }, thunkAPI) => {
-    try {
-      const response = await fetch('http://localhost:5089/api/User/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ customId: id, name, phone })
-      });
-      if (!response.ok) {
-        const errorMsg = await response.text();
-        return thunkAPI.rejectWithValue(errorMsg || 'Registration failed.');
-      }
-      return await response.json();
-    } catch (err) {
-      return thunkAPI.rejectWithValue('Network error.');
-    }
-  }
+  async (userData: { username: string; password: string }) => await api.register(userData)
 );
 
 const registerSlice = createSlice({
@@ -28,9 +14,10 @@ const registerSlice = createSlice({
     success: false,
   },
   reducers: {
-    resetRegisterState: (state) => {
-      state.loading = false;
+    clearRegisterError(state) {
       state.error = '';
+    },
+    clearRegisterSuccess(state) {
       state.success = false;
     },
   },
@@ -43,16 +30,18 @@ const registerSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
-        state.error = '';
         state.success = true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
-        state.success = false;
+        state.error = action.error.message || 'Registration failed.';
       });
   },
 });
 
-export const { resetRegisterState } = registerSlice.actions;
+export const { clearRegisterError, clearRegisterSuccess } = registerSlice.actions;
+export const selectRegisterLoading = (state: any) => state.register.loading;
+export const selectRegisterError = (state: any) => state.register.error;
+export const selectRegisterSuccess = (state: any) => state.register.success;
+
 export default registerSlice.reducer;

@@ -19,7 +19,7 @@ namespace AIDrivenLearningService.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitPrompt([FromBody] PromptRequestDto dto)
         {
-            var prompt = await _promptBl.SubmitPromptAndGetLessonAsync(dto.CustomId, dto.CategoryId, dto.SubCategoryId, dto.PromptText);
+            var prompt = await _promptBl.SubmitPromptAndGetLessonAsync(dto.CustomId, dto.CategoryName, dto.SubCategoryName, dto.PromptText);
             if (prompt == null)
                 return BadRequest("Invalid data or failed to generate lesson.");
             return Ok(prompt);
@@ -41,12 +41,11 @@ namespace AIDrivenLearningService.Controllers
         }
     }
 
-    // DTO for prompt submission
     public class PromptRequestDto
     {
         public string CustomId { get; set; }
-        public string CategoryId { get; set; }
-        public string SubCategoryId { get; set; }
+        public string CategoryName { get; set; }
+        public string SubCategoryName { get; set; }
         public string PromptText { get; set; }
     }
 
