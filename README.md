@@ -93,7 +93,7 @@ ai-driven-learning-frontend/
 ### 1. Clone the repository
 
 ```sh
-git clone https://github.com/yourusername/ai-driven-learning-platform.git
+git clone https://github.com/rivkashasha/ai-driven-learning-platform.git
 cd ai-driven-learning-platform
 ```
 
