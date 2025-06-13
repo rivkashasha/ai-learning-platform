@@ -5,6 +5,7 @@ export const fetchUserHistory = createAsyncThunk(
   "history/fetchUserHistory",
   async (customId: string, { rejectWithValue }) => {
     try {
+      // Use the API function for fetching user history
       return await api.getUserHistory(customId);
     } catch (err: any) {
       return rejectWithValue(err.message || "Failed to fetch history");

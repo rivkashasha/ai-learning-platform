@@ -1,36 +1,34 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import '../css/Register.css';
-import Dashboard from './Dashboard';
+import api from "../api/api";
 
 const SignIn = () => {
     const [id, setId] = useState("");
     const [error, setError] = useState("");
-    const [loggedIn, setLoggedIn] = useState(false);
-    const [loggedInId, setLoggedInId] = useState("");
+    const navigate = useNavigate();
+    const adminId = String(import.meta.env.VITE_ADMIN_ID).trim();
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!id.trim()) {
+        const trimmedId = id.trim();
+        if (!trimmedId) {
             setError("ID is required.");
             return;
         }
         setError("");
         try {
-            const response = await fetch(`http://localhost:5089/api/User/${id}`);
-            if (!response.ok) {
-                const errorMsg = await response.text();
-                setError(errorMsg || 'User not found or login failed.');
-                return;
+            await api.getUserById(trimmedId);
+            if (trimmedId === adminId) {
+                navigate("/admin", { state: { userId: trimmedId } });
+            } else {
+                navigate("/dashboard", { state: { userId: trimmedId } });
             }
-            setLoggedInId(id);
-            setLoggedIn(true);
-            setId("");
-        } catch (err) {
-            setError('Network error.');
+        } catch (err: any) {
+            setError(err.message || 'User not found or login failed.');
         }
     };
-    if (loggedIn) {
-        return <Dashboard userId={loggedInId} onLogout={() => { setLoggedIn(false); setLoggedInId(""); }} />;
-    }
+
     return (
         <div className="register-container">
             <form onSubmit={handleSubmit}>

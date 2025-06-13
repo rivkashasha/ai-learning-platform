@@ -13,7 +13,6 @@ namespace Bl
 
         public CategoryServiceBl(IDal dal, ILogger<CategoryServiceBl> logger)
         {
-            Console.WriteLine("ghj");
             _dal = dal;
             _logger = logger;
         }

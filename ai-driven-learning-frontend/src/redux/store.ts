@@ -4,6 +4,7 @@ import historyReducer from './historySlice';
 import newPromptReducer from './newPromptSlice';
 import registerReducer from './registerSlice';
 import loginReducer from './loginSlice';
+import adminReducer from './adminSlice';
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     newPrompt: newPromptReducer,
     register: registerReducer,
     login: loginReducer,
+    admin: adminReducer,
   },
 });
 

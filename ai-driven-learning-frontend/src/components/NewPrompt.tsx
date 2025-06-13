@@ -1,51 +1,68 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCategories, selectSubCategories, selectSelectedCategory, selectSelectedSubCategory, setSelectedCategory, setSelectedSubCategory, fetchCategories, fetchSubCategories } from "../redux/dashboardSlice";
-import { submitPrompt, selectLesson, selectPromptLoading, selectPromptError, clearLesson } from "../redux/newPromptSlice";
+import api from "../api/api";
 
 const NewPrompt = ({ userId }: { userId: string }) => {
-  const dispatch = useDispatch();
-  const categories = useSelector(selectCategories);
-  const subCategories = useSelector(selectSubCategories);
-  const selectedCategory = useSelector(selectSelectedCategory);
-  const selectedSubCategory = useSelector(selectSelectedSubCategory);
-  const lesson = useSelector(selectLesson);
-  const loading = useSelector(selectPromptLoading);
-  const error = useSelector(selectPromptError);
-
+  const [categories, setCategories] = useState<any[]>([]);
+  const [subCategories, setSubCategories] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
   const [promptText, setPromptText] = useState("");
+  const [lesson, setLesson] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   React.useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    setLoading(true);
+    api.getCategories()
+      .then(setCategories)
+      .catch((err) => setError(err.message || "Failed to load categories"))
+      .finally(() => setLoading(false));
+  }, []);
 
   React.useEffect(() => {
-    if (selectedCategory) dispatch(fetchSubCategories(selectedCategory));
-  }, [dispatch, selectedCategory]);
+    if (selectedCategory) {
+      setLoading(true);
+      api.getSubCategories(selectedCategory)
+        .then(setSubCategories)
+        .catch((err) => setError(err.message || "Failed to load subcategories"))
+        .finally(() => setLoading(false));
+    } else {
+      setSubCategories([]);
+    }
+  }, [selectedCategory]);
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setSelectedCategory(e.target.value));
-    dispatch(setSelectedSubCategory(""));
+    setSelectedCategory(e.target.value);
+    setSelectedSubCategory("");
   };
 
   const handleSubCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(setSelectedSubCategory(e.target.value));
+    setSelectedSubCategory(e.target.value);
   };
 
   const handlePromptChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPromptText(e.target.value);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedCategory || !selectedSubCategory || !promptText.trim()) return;
-    dispatch(clearLesson());
-    dispatch(submitPrompt({
-      customId: userId,
-      categoryName: selectedCategory,
-      subCategoryName: selectedSubCategory,
-      promptText
-    }));
+    setLesson(null);
+    setError(null);
+    setLoading(true);
+    try {
+      const result = await api.submitPrompt({
+        customId: userId,
+        categoryName: selectedCategory,
+        subCategoryName: selectedSubCategory,
+        promptText
+      });
+      setLesson(result);
+    } catch (err: any) {
+      setError(err.message || "Failed to generate lesson");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
