@@ -53,12 +53,10 @@ ai-driven-learning-backend/
 ├── Models/               
 ├── Controllers/          
 ├── appsettings.json      
-├── Program.cs            
-├── Dockerfile            
+├── Program.cs                     
 ├── docker-compose.yml    
 ├── README.md
 ├── Properties/
-├── Migrations/           // (if using EF Core migrations)
 ├── ...Swagger/OpenAPI setup...
 │
 ai-driven-learning-frontend/
