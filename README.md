@@ -16,7 +16,7 @@ A full-stack mini MVP for AI-driven learning, featuring user registration, categ
 - Organized project structure (controllers, models, services, etc.)
 - Basic input validation and API error handling
 - Configuration management via dotenv/appsettings
-- **Swagger/OpenAPI documentation**
+- Swagger/OpenAPI documentation
 
 ---
 
@@ -53,12 +53,10 @@ ai-driven-learning-backend/
 ├── Models/               
 ├── Controllers/          
 ├── appsettings.json      
-├── Program.cs            
-├── Dockerfile            
+├── Program.cs                     
 ├── docker-compose.yml    
 ├── README.md
 ├── Properties/
-├── Migrations/           // (if using EF Core migrations)
 ├── ...Swagger/OpenAPI setup...
 │
 ai-driven-learning-frontend/
